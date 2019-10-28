@@ -250,7 +250,8 @@ If nil, disable semantic highlight."
               (-when-let* ((face (funcall ccls-sem-face-function symbol)))
                 (seq-doseq (range (gethash "ranges" symbol))
                   (-let (((&hash "L" start "R" end) range))
-                    (push (list (1+ start) (1+ end) face) overlays)))))
+                    (unless (string= "(" (string (get-byte (1+ start))))
+                      (push (list (1+ start) (1+ end) face) overlays))))))
             ;; The server guarantees the ranges are non-overlapping.
             (setq overlays (sort overlays (lambda (x y) (< (car x) (car y)))))
             (pcase ccls-sem-highlight-method
