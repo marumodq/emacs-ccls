@@ -82,7 +82,7 @@
   :type '(repeat face)
   :group 'ccls-sem)
 
-(defcustom ccls-sem-macro-faces [font-lock-variable-name-face]
+(defcustom ccls-sem-macro-faces [ccls-sem-macro-face]
   "Faces for macros."
   :type '(repeat face)
   :group 'ccls-sem)
@@ -92,7 +92,7 @@
   :type '(repeat face)
   :group 'ccls-sem)
 
-(defcustom ccls-sem-parameter-faces [font-lock-variable-name-face]
+(defcustom ccls-sem-parameter-faces [ccls-sem-parameter-face]
   "Faces for parameters."
   :type '(repeat face)
   :group 'ccls-sem)
@@ -217,18 +217,18 @@ If nil, disable semantic highlight."
       (252 `(,(funcall fn0 ccls-sem-type-faces 0 1000))) ; TypeAlias
 
       ;; Variables
-      (13 `(,(funcall fn0 ccls-sem-variable-faces 0 1000)
-            ,@(when (member parent-kind '(1 3))
+      (13 `(,@(when (member parent-kind '(1 3))
                 '(ccls-sem-global-variable-face))
             ,@(when (= storage 2)
-                '(ccls-sem-static-face)))) ; Variable
+                '(ccls-sem-static-face))
+            ,(funcall fn0 ccls-sem-variable-faces 0 1000))) ; Variable
       (253 (funcall fn0 ccls-sem-parameter-faces 0 1000)) ; Parameter
       (255 (funcall fn0 ccls-sem-macro-faces 0 1000)) ; Macro
-      (8 `(,(funcall fn0 ccls-sem-variable-faces 0 1000)
-           ,(if (= storage 2)
+      (8 `(,(if (= storage 2)
                 'ccls-sem-static-field-face
               'ccls-sem-member-face
-              ))) ; Field
+              )
+           ,(funcall fn0 ccls-sem-variable-faces 0 1000))) ; Field
       (22 `(,(funcall fn0 ccls-sem-variable-faces 0 1000)
             ccls-sem-member-face)) ; EnumMember
 
